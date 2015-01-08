@@ -1,5 +1,5 @@
 angular.module('CasperWeb.Controllers', []).
-controller('MainController', ['$scope', '$http', 'socketRL', function($scope, $http, socketRL) {
+controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($scope, $http, socketRL, $sce) {
 	$scope.initialize = function() {
 		var s=$scope.socket = socketRL;
 
@@ -35,7 +35,10 @@ controller('MainController', ['$scope', '$http', 'socketRL', function($scope, $h
 			console.log('retry #' + retry + ' ' + file);
 		});
 		$scope.$on('socket:err', function(ev, type, file, code, data, error, index) {
-			$scope.suites[index].files[file].status = "Fail";
+			var f=$scope.suites[index].files[file];
+			f.status = "Fail";
+			f.output = $sce.trustAsHtml($scope.format(data));
+			f.error = true;
 			console.log('error ' + file + ' ' + code);
 			console.log(data);
 			console.log(error);
@@ -58,7 +61,9 @@ controller('MainController', ['$scope', '$http', 'socketRL', function($scope, $h
 		selected.forEach(function(el) {
 			f[el.name] = {
 				status: 'running',
-				screenshots: []
+				screenshots: [],
+				output: '',
+				error: false
 			};
 		});
 		selected = selected.map(function(el) {
@@ -77,6 +82,10 @@ controller('MainController', ['$scope', '$http', 'socketRL', function($scope, $h
 			files: f
 		})
 		$scope.socket.emit('run', type, selected, t.environment, $scope.suites.length-1);
+	}
+
+	$scope.format = function(data) {
+		return data.replace(/\n/g, '<br/>');
 	}
 
 	$scope.initialize();

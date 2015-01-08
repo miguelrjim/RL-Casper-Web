@@ -15,7 +15,9 @@ var express = require('express'),
       '--ssl-protocol=tlsv1',
       '--includes=' + __dirname + '/resources/generalFunctions.js'
     ],
-    dirNameLength = __dirname.length;
+    dirNameLength = __dirname.length,
+    queue = [],
+    running = false;
 
 app.use('/screenshots', express.static(__dirname + '/screenshots'));
 app.use(express.static(__dirname + '/public'));
@@ -34,6 +36,30 @@ function configuration() {
   })
 }
 
+function add() {
+  var args=Array.prototype.slice.call(arguments),
+      fn = args.shift();
+  if(running) {
+    queue.push({
+      args: args,
+      fn: fn
+    })
+  }
+  else {
+    running = true;
+    fn.apply(fn, args);
+  }
+}
+
+function next() {
+  if(queue.length == 0)
+    running = false;
+  else {
+    var t=queue.shift();
+    t.fn.apply(t.fn, t.args);
+  }
+}
+
 function run(file, socket, type, args, timestamp, index) {
   var s = new suite(__dirname + '/' + type + '/', file, type == 'tests', args, timestamp);
   s.on('data', function(file, data) {
@@ -46,12 +72,14 @@ function run(file, socket, type, args, timestamp, index) {
       })
       socket.emit('finished', type, file, data, files, index);
     });
+    next();
   });
   s.on('retry', function(file, times) {
     socket.emit('retry', type, file, times, index);
   });
   s.on('error', function(file, code, data, error) {
     socket.emit('err', type, file, code, data, error, index);
+    next();
   });
   s.start();
 } 
@@ -71,7 +99,7 @@ io.on('connection', function(socket){
         n = t.name;
         a = t.args;
         if(n.length == 0 || !fs.existsSync(__dirname + '/' + type + '/' + n)) continue; 
-        run(n, socket, type, a.map(function(a) {
+        add(run, n, socket, type, a.map(function(a) {
           return '--' + a.name + '=' + a.value;
         }).concat(args.concat(['--host=' + env.url + '.rocketlawyer.com'])), l, index);
       }
