@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Casper on the Web</title>
+    <script type="text/javascript" src="/js/lib/angular.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/lib/socket.js"></script>
+    <script type="text/javascript" src="/js/app/factories.js"></script>
+    <script type="text/javascript" src="/js/app/controllers.js"></script>
+    <script type="text/javascript" src="/js/app/app.js"></script>
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body ng-app="CasperWebApp" ng-controller="MainController">
+    <div>
+      Casper scripts available
+      <ul>
+        <li ng-repeat="script in scripts.list">
+          <input type="checkbox" ng-model="script.selected" /> {{script.name}}
+          <span ng-repeat="arg in script.args">
+            {{arg.name}} <input type="text" ng-model="arg.value" />
+          </span>
+        </li>
+      </ul>
+      Environment <select ng-model="scripts.environment" ng-options="env.name for env in environments"></select>
+      <button ng-click="run('scripts')">Run scripts</button>
+    </div>
+    <div>
+      Casper tests available
+      <ul>
+        <li ng-repeat="test in tests.list">
+          <input type="checkbox" ng-model="test.selected" /> {{test.name}}
+          <span ng-repeat="arg in test.args">
+            {{arg.name}} <input type="text" ng-model="arg.value" />
+          </span>
+        </li>
+      </ul>
+      Environment <select ng-model="tests.environment" ng-options="env.name for env in environments"></select>
+      <button ng-click="run('tests')">Run tests</button>
+    </div>
+    <div>
+      Results
+      <div ng-repeat="suite in suites">
+        Environment: {{suite.environment}}
+        <ul>
+          <li ng-repeat="(name, file) in suite.files">
+            {{name}}: {{file.status}}
+            <div ng-show="file.screenshots.length > 0" >
+              <p ng-click="showScreenshots = !showScreenshots">Toggle screenshots</p>
+              <div ng-show="showScreenshots">
+                <img class="screenshot" ng-class="{full: full}" ng-click="full = !full" ng-repeat="img in file.screenshots" ng-src="{{img}}" />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

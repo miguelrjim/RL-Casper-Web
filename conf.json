@@ -1,0 +1,83 @@
+{
+  "environments": [
+    {
+      "name": "prod",
+      "url": "www"
+    },
+    {
+      "name": "stage",
+      "url": "www.stg"
+    },
+    {
+      "name": "test",
+      "url": "www.test"
+    },
+    {
+      "name": "dev1",
+      "url": "www1.dev"
+    },
+    {
+      "name": "dev2",
+      "url": "www2.dev"
+    },
+    {
+      "name": "dev3",
+      "url": "www3.dev"
+    },
+    {
+      "name": "dev4",
+      "url": "www4.dev"
+    },
+    {
+      "name": "dev5",
+      "url": "www5.dev"
+    },
+    {
+      "name": "dev6",
+      "url": "www6.dev"
+    },
+    {
+      "name": "dev7",
+      "url": "www7.dev"
+    },
+    {
+      "name": "dev8",
+      "url": "www.dev8"
+    },
+    {
+      "name": "dev9",
+      "url": "www.dev9"
+    },
+    {
+      "name": "dev10",
+      "url": "www.dev10"
+    },
+    {
+      "name": "dev11",
+      "url": "www.dev11"
+    },
+    {
+      "name": "dev12",
+      "url": "www.dev12"
+    }
+  ],
+  "tests": [],
+  "scripts": {
+    "getExhibit.js": {
+      "args": [
+        {
+          "name": "times",
+          "required": true
+        },
+        {
+          "name": "user",
+          "required": true
+        },
+        {
+          "name": "password",
+          "required": true
+        }
+      ]
+    }
+  }
+}
