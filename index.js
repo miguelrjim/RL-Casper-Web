@@ -9,19 +9,20 @@ var express = require('express'),
     info = {
       scripts: {},
       tests: {}
-    }
+    },
     args = [
       '--ignore-ssl-errors=true',
       '--ssl-protocol=tlsv1',
-      '--includes=resources/generalFunctions.js'
-    ];
+      '--includes=' + __dirname + '/resources/generalFunctions.js'
+    ],
+    dirNameLength = __dirname.length;
 
-app.use('/screenshots', express.static('screenshots'));
-app.use(express.static('public'));
+app.use('/screenshots', express.static(__dirname + '/screenshots'));
+app.use(express.static(__dirname + '/public'));
 
 
 function configuration() {
-  fs.readFile('conf.json', function(err, data) {
+  fs.readFile(__dirname + '/conf.json', function(err, data) {
     if(err) {
       console.log('bad configuration');
       return;
@@ -34,12 +35,15 @@ function configuration() {
 }
 
 function run(file, socket, type, args, timestamp, index) {
-  var s = new suite(type + '/', file, type == 'tests', args, timestamp);
+  var s = new suite(__dirname + '/' + type + '/', file, type == 'tests', args, timestamp);
   s.on('data', function(file, data) {
     socket.emit('data', type, file, data, index);
   })
   s.on('finished', function(file, data) {
-    glob('screenshots/' + timestamp + "/**/*.png", null, function(err, files) {
+    glob(__dirname + '/screenshots/' + timestamp + "/**/*.png", null, function(err, files) {
+      files = files.map(function(el) {
+        return el.substring(dirNameLength);
+      })
       socket.emit('finished', type, file, data, files, index);
     });
   });
@@ -61,12 +65,12 @@ io.on('connection', function(socket){
           n,
           a,
           l=new Date().getTime();
-      fs.mkdirSync('screenshots/' + l);
+      fs.mkdirSync(__dirname + '/screenshots/' + l);
       for(i in list) {
         t = list[i];
         n = t.name;
         a = t.args;
-        if(n.length == 0 || !fs.existsSync(type + '/' + n)) continue; 
+        if(n.length == 0 || !fs.existsSync(__dirname + '/' + type + '/' + n)) continue; 
         run(n, socket, type, a.map(function(a) {
           return '--' + a.name + '=' + a.value;
         }).concat(args.concat(['--host=' + env.url + '.rocketlawyer.com'])), l, index);
@@ -93,7 +97,7 @@ io.on('connection', function(socket){
       case 'scripts':
       case 'tests':
         inf=info[type];
-        fs.readdir(type, function(err, files) {
+        fs.readdir(__dirname + '/' + type, function(err, files) {
           s.emit('list', type, files.map(function(el) {
             t=inf[el];
             return {

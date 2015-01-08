@@ -13,8 +13,8 @@ function TestSuite(folder, file, test, args, timestamp) {
 		t.args.unshift('test');
 	if(args)
 		t.args = args.concat(t.args);
-	t.args.push('--scr=screenshots/' + timestamp + '/' + file + '/');
-	fs.mkdirSync('screenshots/' + timestamp + '/' + file);
+	t.args.push('--scr=' + __dirname + '/screenshots/' + timestamp + '/' + file + '/');
+	fs.mkdirSync(__dirname + '/screenshots/' + timestamp + '/' + file);
 	this.start = function(timeout) {
 		setTimeout(function() {
 			t.run();
