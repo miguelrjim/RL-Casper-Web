@@ -121,7 +121,7 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 					k = h[1].split(';');
 					for(m=0;m<k.length;m++) {
 						p=parseInt(k[m]);
-						else if(p >= 30 && p < 40)
+						if(p >= 30 && p < 40)
 							e+='color:#' + colors[p-30]+';'; 
 						else if(p > 40)
 							e+='background-color:#' + colors[p-40] + ';';
