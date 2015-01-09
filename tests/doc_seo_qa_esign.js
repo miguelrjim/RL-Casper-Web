@@ -11,6 +11,7 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
         longWaitTime = 12000,
         reallyLongWaitTime = 20000;
     var screenshotFolder = casper.cli.get('scr');
+    var date = new Date();
     var viewports = [
             {
               'name': 'smartphone-portrait',
@@ -38,7 +39,7 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
     casper.start(getStartingPoint('/document/bid-bond.rl'), function(response) {
         if(response.status != 200)
             casper.die('Unable to connect to the env', 101);
-        this.echo("====== Beginning Test Suite ====== Env: " + environment);
+        this.echo("====== Beginning Test Suite ======");
         test.assertHttpStatus(200, 'Connected to Doc Landing page');
         test.assertTitle('Bid Bond Form, Sample, Template', 'Title is correct');
     });
