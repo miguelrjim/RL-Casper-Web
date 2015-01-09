@@ -46,7 +46,6 @@ casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', fun
     if(response.status != 200)
       casper.die('Unable to connect to the env', 101);
     this.echo("============== Beginning Test Suite ==============");
-    this.echo("============== Environment is " + environment + " ==============");
     test.assertHttpStatus(200, "Connected to the Incorporation Registration page");
     test.assertTitle("Register for Your Incorporation", "Title is correct");
   });

@@ -29,7 +29,6 @@ casper.test.begin('Regression Q&A Funnel with Single Question Purchase', functio
         if(response.status != 200)
             casper.die('Unable to connect to the env', 101);
         this.echo("======= Beginning Test Suite =======");
-        this.echo("======= Environment is " + environment + "=========");
         test.assertHttpStatus(200, 'Connected to Home page');
         test.assertTitle('Affordable Legal Services, Free Legal Documents, Advice & Ask a Lawyer | Rocket Lawyer', 'Title is correct');
     });

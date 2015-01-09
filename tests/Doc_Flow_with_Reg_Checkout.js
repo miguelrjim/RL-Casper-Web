@@ -27,7 +27,7 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
     casper.start( getStartingPoint("/document/exhibit.rl"), function(response) {
         if(response.status != 200)
             casper.die('Unable to connect to the env', 101);
-        this.echo("====== Beginning Test Suite ====== Env: " + environment);
+        this.echo("====== Beginning Test Suite ====== ");
         test.assertHttpStatus(200, 'Connected to Doc Landing page');
         test.assertTitle('Exhibit - Legal Attachments (Form With Sample)', 'Title is correct');
     });
