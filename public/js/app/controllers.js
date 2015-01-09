@@ -85,7 +85,60 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 	}
 
 	$scope.format = function(data) {
-		return data.replace(/\n/g, '<br/>');
+		var n='',
+			t=0,
+			s=/^\u001b\[([^m]+)m/,
+			i=/^[^\u001b]*/,
+			h,
+			k,
+			e,
+			m,
+			p,
+			colors=[
+				'000',
+				'F00',
+				'0F0',
+				'FF0',
+				'00F',
+				'F0F',
+				'0FF',
+				'FFF'
+			],
+			open=false;
+		while(t < data.length) {
+			e='';
+			h=s.exec(data);
+			if(h) {
+				if(h[1] == '0') {
+					e='</span>';
+					open=false;
+				}
+				else {
+					if(open)
+						e='</span>';
+					open=true;
+					e+='<span style="';
+					k = h[1].split(';');
+					for(m=0;m<k.length;m++) {
+						p=parseInt(k[m]);
+						else if(p >= 30 && p < 40)
+							e+='color:#' + colors[p-30]+';'; 
+						else if(p > 40)
+							e+='background-color:#' + colors[p-40] + ';';
+					}
+					e+='">';
+				}
+				n+=e;
+				data = data.substr(h[0].length);
+			}
+			h=i.exec(data);
+			if(h) {
+				e=h[0];
+				data = data.substr(h[0].length);
+				n+=e;
+			}
+		}
+		return n.replace(/\n/g, '<br/>');
 	}
 
 	$scope.initialize();
