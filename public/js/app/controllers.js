@@ -157,5 +157,11 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 		return n.replace(/\n/g, '<br/>');
 	}
 
+	$scope.toggle = function(type) {
+		$scope[type].list.forEach(function(el) {
+			el.selected = !el.selected;
+		});
+	};
+
 	$scope.initialize();
 }]);

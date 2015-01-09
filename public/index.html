@@ -12,7 +12,8 @@
   </head>
   <body ng-app="CasperWebApp" ng-controller="MainController">
     <div>
-      Casper scripts available
+      <p>Casper scripts available</p>
+      <button ng-click="toggle('scripts')">Toggle all</button>
       <ul>
         <li ng-repeat="script in scripts.list">
           <input type="checkbox" ng-model="script.selected" /> {{script.name}}
@@ -25,7 +26,8 @@
       <button ng-click="run('scripts')">Run scripts</button>
     </div>
     <div>
-      Casper tests available
+      <p>Casper tests available</p>
+      <button ng-click="toggle('tests')">Toggle all</button>
       <ul>
         <li ng-repeat="test in tests.list">
           <input type="checkbox" ng-model="test.selected" /> {{test.name}}
@@ -38,7 +40,7 @@
       <button ng-click="run('tests')">Run tests</button>
     </div>
     <div>
-      Results
+      <p>Results</p>
       <div ng-repeat="suite in suites">
         Environment: {{suite.environment}}
         <ul>
