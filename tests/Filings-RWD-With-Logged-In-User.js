@@ -1,18 +1,17 @@
 /*
  * Description:
- * This flow will
+ * This flow will be run to verify the story https://www2.v1host.com/RocketLawyer/story.mvc/Summary?oidToken=Story:198237
  *
  * command:
- * RL-Casper$ casperjs test --includes=./resources/generalFunctions.js ./ecommerce/plans_and_pricing_flow.js --env=test
- *
+ * RL-Casper$ casperjs test --includes=./resources/generalFunctions.js ./smoke/Filings-RWD-With-Logged-In-User.js --env=test
+ * command for stage env:
+   casperjs test --ssl-protocol=any --includes=./resources/generalFunctions.js ./smoke/Filings-RWD-With-Logged-In-User.js --env=stage
  */
 
 casper.test.begin("Incorporation Flow for an existing user", function (test) {
 
 var startingUrl = getStartingPoint("/homepage.rl");
 var waitTime = 3000;
-var varscreenshotNow = new Date();
-var screenshotIndex = 1;
 var screenshotFolder = casper.cli.get('scr');
 
 casper.start(startingUrl, function(response) {
@@ -28,7 +27,7 @@ casper.then(function() {
 });
 
 
-casper.thenClick(".rlHeaderTopRightLink[href='/login-register.rl#/register/?hd=navreg']", function () {
+casper.thenClick(".rlHeaderTopRightLink[href='/login-register.rl#/register?hd=navreg']", function () {
   this.echo("\nGoing to the registration page \n", "COMMENT");
 });
 
@@ -92,7 +91,7 @@ casper.wait(waitTime, function () {
    test.assertExists("option[value='California'][selected='selected']", "We have selected the California option");
 
    this.viewport(1280, 1024);
-   this.capture(screenshotFolder + "/" + screenshotIndex + "-entity-page.png" );
+   this.capture(screenshotFolder + "/01-entity-page.png" );
    this.fill('form#incorporation-interview-form', {}, true);
  });
 
@@ -240,7 +239,7 @@ casper.wait(waitTime, function () {
    this.viewport(1280, 1024);
    this.capture(screenshotFolder + "/10-review-page.png" );
    // this.echo("# Took a screenshot");
-   this.fill("form[action='https://www.rocketlawyer.com/checkout-incorp.rl']", {}, true);
+   this.fill(".actions form", {}, true);
  });
 
  casper.wait(waitTime, function () {
@@ -307,7 +306,7 @@ casper.wait(waitTime, function () {
 
  //====================================== DASHBOARD ======================================//
 
- casper.thenOpen("https://www.rocketlawyer.com/dashboard.rl", function() {
+ casper.thenClick(".rlHeaderTopIconButtonOuterDashboard[href='/dashboard.rl']", function () {
    test.assertHttpStatus(200, "The dashboard is up");
    test.assertUrlMatch("/dashboard.rl", "We're at the dashboard");
 

@@ -10,18 +10,6 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
         mediumWaitTime = 8000,
         longWaitTime = 12000,
         reallyLongWaitTime = 20000;
-    var date = new Date(),
-        y = date.getFullYear() + '',
-        m = date.getMonth() + '',
-        d = date.getDay() + '',
-        h = date.getHours() + '',
-        min = date.getMinutes() + '',
-        s = date.getSeconds() + '';
-    if(m.length == 1) m = '0' + m;
-    if(d.length == 1) d = '0' + d;
-    if(h.length == 1) h = '0' + h;
-    if(min.length == 1) min = '0' + min;
-    if(s.length == 1) s = '0' + s;
     var screenshotFolder = casper.cli.get('scr');
     var viewports = [
             {
@@ -45,8 +33,9 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
               'viewport': {width: 1280, height: 1024}
             }
           ];
-          
-    casper.start(getStartingPoint("/document/bid-bond.rl"), function(response) {
+    //load the landing page and verify it is correct
+
+    casper.start(getStartingPoint('/document/bid-bond.rl'), function(response) {
         if(response.status != 200)
             casper.die('Unable to connect to the env', 101);
         this.echo("====== Beginning Test Suite ====== Env: " + environment);
@@ -90,9 +79,9 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
         test.assertUrlMatch(/\/login-register.rl/, 'Landed on Registration Page');
         var user='casper+docfunnel+' + date.getTime() + '@rocketlawyer.com';
         this.echo("Created user is: " + user);
-        this.fill('form#loginForm', {
+        this.fill('form#registerForm', {
             'email': user,
-            'pass': password
+            'pass': user
         }, false);
         this.clickLabel('Continue', 'button');
     });
@@ -124,7 +113,7 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
     });
 
     casper.then(function() {
-        this.click('a[href="/dashboard.rl"]');
+        this.click(".rlModal.choose [ng-click=\"select('sign')\"]");
         this.wait(shortWaitTime);
     });
 
@@ -196,6 +185,9 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
         });
         this.click('a[href="/account-details.rl#/membership"]');
     });
+
+    casper.waitForUrl(/\/account-details.rl#\/membership/);
+    casper.wait(waitTime);
 
     casper.then(function() {
         test.assertTextExists('Your Membership: Complete Monthly Legal Plan Trial', 'Plan Information Matches');

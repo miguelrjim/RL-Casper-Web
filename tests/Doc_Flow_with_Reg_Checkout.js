@@ -24,17 +24,17 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
             }
           ];
     //load the landing page and verify it is correct
-    casper.start(getStartingPoint("/document/exhibit.rl"), function(response) {
+    casper.start( getStartingPoint("/document/exhibit.rl"), function(response) {
         if(response.status != 200)
             casper.die('Unable to connect to the env', 101);
-        this.echo("====== Beginning Test Suite ======");
+        this.echo("====== Beginning Test Suite ====== Env: " + environment);
         test.assertHttpStatus(200, 'Connected to Doc Landing page');
         test.assertTitle('Exhibit - Legal Attachments (Form With Sample)', 'Title is correct');
     });
 
     //click the Make Document button
     casper.then(function(){
-    	this.clickLabel('Make Document', 'a');
+        this.clickLabel('Make Document', 'a');
     });
 
     //wait for the next page of the interview to load
@@ -56,7 +56,7 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
 
     //submit the first answer
     casper.then(function(){
-    	this.clickLabel('Continue', 'a');
+        this.clickLabel('Continue', 'a');
     });
 
     //wait for the next page of the interview to load
@@ -135,7 +135,7 @@ casper.test.begin('Mr. RoGato: Doc Creation With Registration and Checkout Regre
     casper.then(function(){
       casper.each(viewports, function(casper, viewport) {
         this.viewport(viewport.viewport.width, viewport.viewport.height);
-        this.capture(screenshotFolder + '/doc-checkout/' + viewport.name + '-' + viewport.viewport.width + 'x' + viewport.viewport.height + '.png', {top: 0,left: 0,width: viewport.viewport.width,height: viewport.viewport.height});
+        this.capture(screenshotFolder +'/doc-checkout/' + viewport.name + '-' + viewport.viewport.width + 'x' + viewport.viewport.height + '.png', {top: 0,left: 0,width: viewport.viewport.width,height: viewport.viewport.height});
         });
         this.echo("Taking Screenshots in all Device Aspect Ratios");
     });

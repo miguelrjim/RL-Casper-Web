@@ -3,7 +3,7 @@
  * This flow will
  *
  * command:
- * RL-Casper$ casperjs test --ssl-protocol=any --includes=./resources/generalFunctions.js ./login/Login-and-Registration.js --env=test
+ * RL-Casper$ casperjs test --ssl-protocol=any --includes=./resources/generalFunctions.js ./smoke/Login-and-Registration.js --env=test
  *
  */
 
@@ -24,7 +24,7 @@ casper.then(function() {
 });
 
 
-casper.thenClick(".rlHeaderTopRightLink[href='/login-register.rl#/register/?hd=navreg']", function () {
+casper.thenClick(".rlHeaderTopRightLink[href='/login-register.rl#/register?hd=navreg']", function () {
   this.echo("\nGoing to the registration page \n", "COMMENT");
 });
 
@@ -56,7 +56,7 @@ casper.waitForUrl("rocketlawyer.com", function() {
 
 //====================================== LOG USER IN ======================================//
 
-casper.thenClick(".rlHeaderTopRightLink[href='/login-register.rl#/login/?hd=navreg']", function () {
+casper.thenClick(".rlHeaderTopRightLink[href='/login-register.rl#/login?hd=navreg']", function () {
   this.echo("\nGoing to the login page \n", "COMMENT");
 });
 

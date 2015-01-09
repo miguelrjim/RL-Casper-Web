@@ -1,5 +1,14 @@
-// This will be the filings flow for a California LLC for a Logged Out user
+/*
 
+This will be the filings flow for a California LLC for a Logged Out user.  It can be run to verify 
+the story This flow will be run to verify the story 
+https://www2.v1host.com/RocketLawyer/story.mvc/Summary?oidToken=Story:198237
+command:
+RL-Casper$ casperjs test --includes=./resources/generalFunctions.js ./smoke/Filings_RWD_with_Checkout.js --env=test
+command for stage env: 
+casperjs test --ssl-protocol=any --includes=./resources/generalFunctions.js ./smoke/Filings_RWD_with_Checkout.js --env=stage
+
+*/
 // TODO: Create a common file that will store all of the
 // viewport sizes and other common elements
 
@@ -9,7 +18,7 @@
 
 casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', function suite (test) {
     var waitTime = 3000;
-    var varscreenshotNow = new Date();
+    var screenshotFolder = casper.cli.get('scr');
     var viewports = [
             {
               'name': 'smartphone-portrait',
@@ -32,8 +41,6 @@ casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', fun
               'viewport': {width: 1280, height: 1024}
             }
           ];
-    var screenshotIndex = 1;
-    var screenshotFolder = casper.cli.get('scr');
 
   casper.start(getStartingPoint("/incorporation-register-rwd.rl"), function(response) {
     if(response.status != 200)
@@ -62,8 +69,7 @@ casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', fun
     }, true);
 
     this.viewport(1280, 1024);
-    this.capture(screenshotFolder + "/" + screenshotIndex + "-register-page.png" );
-    screenshotIndex += 1;
+    this.capture(screenshotFolder + "/01-register-page.png" );
 
     this.echo("============== Filled Out the Form ==============");
     this.echo("============== New User: " + randomUser + " ==============");
@@ -82,7 +88,7 @@ casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', fun
     test.assertExists("option[value='California'][selected='selected']", "We have selected the California option");
 
     this.viewport(1280, 1024);
-    this.capture(screenshotFolder + "/" + screenshotIndex + "-entity-page.png" );
+    this.capture(screenshotFolder + "/02-entity-page.png" );
     this.fill('form#incorporation-interview-form', {}, true);
   });
 
@@ -230,7 +236,7 @@ casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', fun
     this.viewport(1280, 1024);
     this.capture(screenshotFolder + "/10-review-page.png" );
     // this.echo("# Took a screenshot");
-    this.fill("form[action='https://www.rocketlawyer.com/checkout-incorp.rl']", {}, true);
+    this.fill(".actions form", {}, true);
   });
 
   casper.wait(waitTime, function () {
@@ -297,7 +303,7 @@ casper.test.begin('Filings Flow RWD Interview and Checkout Regression Test', fun
 
   //====================================== DASBOARD ======================================//
 
-  casper.thenOpen(urlPrefix + ".rocketlawyer.com/dashboard.rl", function() {
+  casper.thenOpen(getStartingPoint("/dashboard.rl"), function() {
     test.assertHttpStatus(200, "The dashboard is up");
     test.assertUrlMatch("/dashboard.rl", "We're at the dashboard");
 

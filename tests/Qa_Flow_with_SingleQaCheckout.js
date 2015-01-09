@@ -1,32 +1,31 @@
 casper.test.begin('Regression Q&A Funnel with Single Question Purchase', function suite(test) {
     var waitTime = 3000;
-    var varscreenshotNow = new Date();
     var screenshotFolder = casper.cli.get('scr');
     var viewports = [
-            {
-              'name': 'smartphone-portrait',
-              'viewport': {width: 320, height: 480}
-            },
-            {
-              'name': 'smartphone-landscape',
-              'viewport': {width: 480, height: 320}
-            },
-            {
-              'name': 'tablet-portrait',
-              'viewport': {width: 768, height: 1024}
-            },
-            {
-              'name': 'tablet-landscape',
-              'viewport': {width: 1024, height: 768}
-            },
-            {
-              'name': 'desktop-standard',
-              'viewport': {width: 1280, height: 1280}
-            }
-          ];
+        {
+          'name': 'smartphone-portrait',
+          'viewport': {width: 320, height: 480}
+        },
+        {
+          'name': 'smartphone-landscape',
+          'viewport': {width: 480, height: 320}
+        },
+        {
+          'name': 'tablet-portrait',
+          'viewport': {width: 768, height: 1024}
+        },
+        {
+          'name': 'tablet-landscape',
+          'viewport': {width: 1024, height: 768}
+        },
+        {
+          'name': 'desktop-standard',
+          'viewport': {width: 1280, height: 1280}
+        }
+      ];
 
     //load the Home Page and verify it is correct
-    casper.start(getStartingPoint(""), function(response) {
+    casper.start( getStartingPoint(""), function(response) {
         if(response.status != 200)
             casper.die('Unable to connect to the env', 101);
         this.echo("======= Beginning Test Suite =======");
