@@ -61,6 +61,7 @@ function next() {
 }
 
 function run(file, socket, type, args, timestamp, index) {
+  socket.emit('start', file, index);
   var s = new suite(__dirname + '/' + type + '/', file, type == 'tests', args, timestamp);
   s.on('data', function(file, data) {
     socket.emit('data', type, file, data, index);

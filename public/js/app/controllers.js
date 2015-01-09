@@ -34,6 +34,9 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 		$scope.$on('socket:retry', function(ev, type, file, retry, index) {
 			console.log('retry #' + retry + ' ' + file);
 		});
+		$scope.$on('socket:start', function(ev, file, index) {
+			$scope.suites[index].files[file].status = 'running';
+		});
 		$scope.$on('socket:err', function(ev, type, file, code, data, error, index) {
 			var f=$scope.suites[index].files[file];
 			f.status = "Fail";
@@ -62,7 +65,7 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 			});
 		selected.forEach(function(el) {
 			f[el.name] = {
-				status: 'running',
+				status: 'waiting...',
 				screenshots: [],
 				output: '',
 				error: false
