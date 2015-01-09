@@ -44,10 +44,13 @@
         <ul>
           <li ng-repeat="(name, file) in suite.files">
             {{name}}: {{file.status}}
-            <div ng-show="file.screenshots.length > 0">
+            <div ng-show="file.screenshots">
               <p ng-click="showScreenshots = !showScreenshots">Toggle screenshots</p>
               <div ng-show="showScreenshots">
-                <img class="screenshot" ng-class="{full: full}" ng-click="full = !full" ng-repeat="img in file.screenshots" ng-src="{{img}}" />
+                <div ng-repeat="(category, screenshots) in file.screenshots">
+                  <p>{{category}}</p>
+                  <img class="screenshot" ng-class="{full: full}" ng-click="full = !full" ng-repeat="img in screenshots" ng-src="{{img}}" />
+                </div>
               </div>
             </div>
             <div ng-show="file.error">

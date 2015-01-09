@@ -25,8 +25,19 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 		});
 
 		$scope.$on('socket:finished', function(ev, type, file, data, screenshots, index) {
-			var f=$scope.suites[index].files[file];
-			f.screenshots = screenshots;
+			var f=$scope.suites[index].files[file],
+				sub=/[^\/]+\/[^\/]+$/,
+				t;
+			if(screenshots.length > 0)
+				f.screenshots = {};
+			screenshots.forEach(function(el) {
+				t=sub.exec(el);
+				t=t[0];
+				t=t.substr(0,t.indexOf('/'));
+				if(!f.screenshots[t])
+					f.screenshots[t] = [];
+				f.screenshots[t].push(el);
+			});
 			f.status = "Success";
 			console.log('finished ' + file);
 			console.log(data);
@@ -66,7 +77,7 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 		selected.forEach(function(el) {
 			f[el.name] = {
 				status: 'waiting...',
-				screenshots: [],
+				screenshots: null,
 				output: '',
 				error: false
 			};
