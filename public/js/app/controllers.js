@@ -56,7 +56,9 @@ controller('MainController', ['$scope', '$http', 'socketRL', '$sce', function($s
 		var f = {},
 			t = $scope[type],
 			selected = t.list.filter(function(el) {
-				return el.selected;
+				var t=el.selected;
+				el.selected = false;
+				return t;
 			});
 		selected.forEach(function(el) {
 			f[el.name] = {
