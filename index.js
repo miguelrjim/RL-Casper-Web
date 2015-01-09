@@ -67,7 +67,7 @@ function run(file, socket, type, args, timestamp, index) {
     socket.emit('data', type, file, data, index);
   })
   s.on('finished', function(file, data) {
-    glob(__dirname + '/screenshots/' + timestamp + '/' + file '/**/*.png', null, function(err, files) {
+    glob(__dirname + '/screenshots/' + timestamp + '/' + file + '/**/*.png', null, function(err, files) {
       files = files.map(function(el) {
         return el.substring(dirNameLength);
       })
