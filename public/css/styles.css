@@ -1,5 +1,6 @@
 .screenshot {
 	max-width: 300px;
+	vertical-align: top;
 }
 
 .screenshot.full {
