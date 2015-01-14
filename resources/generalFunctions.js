@@ -44,6 +44,13 @@ function getStartingPoint(pageUrl) {
     else if (host !== null)   { urlPrefix = 'https://' + host; }
     else                      { urlPrefix = 'https://www.rocketlawyer.com'; } // default it to PROD just because
 
+    if(env == 'stage' || host == 'https://www.stg.rocketlawyer.com') {
+        casper.options.pageSettings = {
+            userName: 'cicero',
+            password: 'chickpea'
+        }
+    }
+
     return urlPrefix + pageUrl;
 }
 
